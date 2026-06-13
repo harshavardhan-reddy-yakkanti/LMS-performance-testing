@@ -1,0 +1,317 @@
+{
+  "metrics": {
+    "http_req_receiving": {
+      "values": {
+        "max": 1.0121,
+        "p(90)": 0.84116,
+        "p(95)": 0.8819999999999999,
+        "avg": 0.32535600000000003,
+        "min": 0,
+        "med": 0
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "checks": {
+      "values": {
+        "rate": 1,
+        "passes": 40,
+        "fails": 0
+      },
+      "type": "rate",
+      "contains": "default"
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0,
+        "med": 64.6085,
+        "max": 129.4553,
+        "p(90)": 128.9394,
+        "p(95)": 129.35211999999999,
+        "avg": 56.656812
+      }
+    },
+    "http_req_connecting": {
+      "values": {
+        "med": 22.5606,
+        "max": 26.4649,
+        "p(90)": 26.4649,
+        "p(95)": 26.4649,
+        "avg": 12.843796000000003,
+        "min": 0
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "Login_API": {
+      "values": {
+        "avg": 1120.56874,
+        "min": 840.0807,
+        "med": 921.3065,
+        "max": 1673.7245,
+        "p(90)": 1669.92299,
+        "p(95)": 1671.8237450000001
+      },
+      "type": "trend",
+      "contains": "default"
+    },
+    "Live_Session_API": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "p(90)": 218.62296,
+        "p(95)": 219.88368,
+        "avg": 119.41068,
+        "min": 43.2695,
+        "med": 59.1538,
+        "max": 221.1444
+      }
+    },
+    "http_reqs": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 25,
+        "rate": 12.405100361975865
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 0,
+        "med": 0,
+        "max": 0.5344,
+        "p(90)": 0,
+        "p(95)": 0.4071199999999986,
+        "avg": 0.041732
+      }
+    },
+    "vus_max": {
+      "values": {
+        "value": 10,
+        "min": 10,
+        "max": 10
+      },
+      "type": "gauge",
+      "contains": "default"
+    },
+    "http_req_waiting": {
+      "values": {
+        "max": 1673.0696,
+        "p(90)": 1374.9161600000011,
+        "p(95)": 1668.1378399999999,
+        "avg": 519.109136,
+        "min": 41.715,
+        "med": 221.1444
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 519.476224,
+        "min": 42.0144,
+        "med": 221.1444,
+        "max": 1673.7245,
+        "p(90)": 1375.2711600000011,
+        "p(95)": 1668.78816
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "values": {
+        "avg": 425.47221500000006,
+        "min": 42.0144,
+        "med": 165.70815,
+        "max": 1673.7245,
+        "p(90)": 1666.2946200000001,
+        "p(95)": 1669.7117950000002
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 10,
+        "rate": 4.962040144790346
+      }
+    },
+    "OpenLesson_API": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "min": 56.6362,
+        "med": 86.6529,
+        "max": 259.9761,
+        "p(90)": 232.82421999999997,
+        "p(95)": 246.40015999999997,
+        "avg": 135.04526
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 38.4509,
+        "max": 71.2074,
+        "p(90)": 71.2074,
+        "p(95)": 71.2074,
+        "avg": 31.236036,
+        "min": 0
+      }
+    },
+    "http_req_failed": {
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0.2,
+        "passes": 5,
+        "fails": 20
+      }
+    },
+    "Course_Content_API": {
+      "type": "trend",
+      "contains": "default",
+      "values": {
+        "p(95)": 204.81717999999998,
+        "avg": 101.7877,
+        "min": 42.0144,
+        "med": 64.1633,
+        "max": 221.1915,
+        "p(90)": 188.44286
+      }
+    },
+    "data_received": {
+      "values": {
+        "count": 84557,
+        "rate": 41957.52285230373
+      },
+      "type": "counter",
+      "contains": "data"
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 32746,
+        "rate": 16248.696658130468
+      }
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 1442.27837,
+        "min": 969.536,
+        "med": 1371.6257500000002,
+        "max": 2014.7762,
+        "p(90)": 1975.8530899999998,
+        "p(95)": 1995.314645
+      }
+    },
+    "vus": {
+      "contains": "default",
+      "values": {
+        "value": 1,
+        "min": 1,
+        "max": 8
+      },
+      "type": "gauge"
+    },
+    "login_success_count": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 5,
+        "rate": 2.481020072395173
+      }
+    }
+  },
+  "root_group": {
+    "checks": [
+      {
+        "name": "login status is 200",
+        "path": "::login status is 200",
+        "id": "baba87e761865dc93085ee0c1fe25f4c",
+        "passes": 5,
+        "fails": 0
+      },
+      {
+        "passes": 5,
+        "fails": 0,
+        "name": "login success is true",
+        "path": "::login success is true",
+        "id": "debb12dd9e046844a0ba768a571985ef"
+      },
+      {
+        "name": "access token is present",
+        "path": "::access token is present",
+        "id": "48dfe2ca168be0f3098e1b6afbf043c0",
+        "passes": 5,
+        "fails": 0
+      },
+      {
+        "name": "refresh token is present",
+        "path": "::refresh token is present",
+        "id": "ae62e91f64d665bb70ee62739edde972",
+        "passes": 5,
+        "fails": 0
+      },
+      {
+        "name": "access token extracted",
+        "path": "::access token extracted",
+        "id": "398c8ef2651eb1de2e98dc4efdfad89d",
+        "passes": 5,
+        "fails": 0
+      },
+      {
+        "fails": 0,
+        "name": "getCourseContent status is 200",
+        "path": "::getCourseContent status is 200",
+        "id": "185c6bd4184f47c2be5b0af1fa410701",
+        "passes": 5
+      },
+      {
+        "fails": 0,
+        "name": "openLiveLesson status is 200",
+        "path": "::openLiveLesson status is 200",
+        "id": "40ccf93b13e0c274fc7180dd54c698c7",
+        "passes": 5
+      },
+      {
+        "name": "getLiveSession status is 200",
+        "path": "::getLiveSession status is 200",
+        "id": "1b141a89e0a8b15c3fef461fc80d7e65",
+        "passes": 5,
+        "fails": 0
+      }
+    ],
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e",
+    "groups": []
+  },
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdOutTTY": true,
+    "isStdErrTTY": true,
+    "testRunDurationMs": 2015.3001
+  }
+}
