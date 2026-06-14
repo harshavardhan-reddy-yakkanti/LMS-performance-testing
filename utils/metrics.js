@@ -4,6 +4,7 @@ const customMetrics = {
   loginSuccess: new Counter('login_success_count'),
   courseAccessSuccess: new Counter('course_access_success_count'),
   missingLessonIds: new Counter('missing_lesson_ids_count'),
+  apiFailureCount: new Counter('api_failure_count'),
   failureRate: new Rate('failure_rate'),
   requestDuration: new Trend('request_duration_ms'),
   loginDuration: new Trend('Login_API'),
@@ -40,6 +41,13 @@ export function recordLiveSessionDuration(durationMs) {
 
 export function recordFailure(isFailed) {
   customMetrics.failureRate.add(isFailed ? 1 : 0);
+}
+
+export function recordApiFailureMetric(apiName, statusCode) {
+  customMetrics.apiFailureCount.add(1, {
+    api: apiName,
+    status: String(statusCode),
+  });
 }
 
 export function getMetrics() {

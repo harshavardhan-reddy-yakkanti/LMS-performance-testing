@@ -116,7 +116,7 @@ export function openLesson(lessonId, token, env) {
   console.log(`[DEBUG] Lesson Id: ${lessonId}`);
   console.log(`[DEBUG] URL: ${url}`);
 
-  const response = request('GET', url, null, params);
+  const response = request('GET', url, null, params, 'Open_Lesson_API');
 
   console.log(`[DEBUG] Status Code: ${response.status}`);
   console.log(`[DEBUG] Response Body: ${response.body}`);
@@ -142,7 +142,7 @@ export function openLiveLesson(lessonId, token, env) {
   console.log('[DEBUG] Opening Live Lesson');
   console.log(`[DEBUG] Live Lesson Id: ${lessonId}`);
 
-  const response = request('GET', url, null, params);
+  const response = request('GET', url, null, params, 'OpenLesson_API');
 
   if (response.timings && response.timings.duration) {
     recordOpenLessonDuration(response.timings.duration);

@@ -12,7 +12,7 @@ export function getLiveSession(sessionId, token, env) {
 
   console.log(`[DEBUG] Live Session Id: ${sessionId}`);
 
-  const response = request('GET', url, null, params);
+  const response = request('GET', url, null, params, 'Live_Session_API');
 
   if (response.timings && response.timings.duration) {
     recordLiveSessionDuration(response.timings.duration);

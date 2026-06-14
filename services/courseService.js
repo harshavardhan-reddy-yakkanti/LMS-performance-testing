@@ -11,7 +11,7 @@ export function getMyCourses(token, env) {
     },
   };
 
-  const response = request('GET', url, null, params);
+  const response = request('GET', url, null, params, 'Get_My_Courses_API');
   checkResponse(response, 200, 'getMyCourses');
 
   const courses = response.json() || [];
@@ -34,7 +34,7 @@ export function getCourseContent(courseSlug, token, env) {
   };
 
 
-  const response = request('GET', url, null, params);
+  const response = request('GET', url, null, params, 'Get_Course_Content_API');
 
   checkResponse(response, 200, 'getCourseContent');
 
