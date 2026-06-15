@@ -18,6 +18,15 @@ const courses = loadCourses();
 export const options = {
   vus:2,
   iterations: 2,
+  summaryTrendStats: [
+    'avg',
+    'min',
+    'med',
+    'max',
+    'p(90)',
+    'p(95)',
+    'p(99)',
+  ],
 }
 
 // export const options = {
@@ -53,16 +62,11 @@ export default function () {
     user
   );
 
-  check(accessToken, {
-    'access token extracted': (token) =>
-      Boolean(token) && token.length > 20,
-  });
-
-  console.log('Login Successful');
-  console.log(`User Email: ${user.email}`);
-  console.log(
-    `Access Token Preview: ${accessToken.slice(0, 20)}`
-  );
+  // console.log('Login Successful');
+  // console.log(`User Email: ${user.email}`);
+  // console.log(
+  //   `Access Token Preview: ${accessToken.slice(0, 20)}`
+  // );
 
   if (!courses || courses.length === 0) {
     throw new Error(
