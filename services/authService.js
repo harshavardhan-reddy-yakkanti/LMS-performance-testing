@@ -1,6 +1,7 @@
 import { request } from '../utils/apiClient.js';
-import { recordLoginDuration } from '../utils/metrics.js';
+import { recordLoginDuration, recordLoginApiFailure, recordApiFailureMetric } from '../utils/metrics.js';
 import { addFailure } from '../utils/failureCollector.js';
+import { checkResponse } from '../utils/checks.js';
 
 export function login(baseUrl, email, password) {
   const url = `${baseUrl}/auth/login`;
@@ -15,28 +16,23 @@ export function login(baseUrl, email, password) {
     'POST',
     url,
     payload,
-    params,
-    'Login_API'
+    params
   );
-  const body = response.json();
 
-  if (response.timings && response.timings.duration) {
-    recordLoginDuration(response.timings.duration);
-  }
-
-  if (response.status !== 200) {
-    addFailure({
-      operation: 'login',
-      url,
-      status: response.status,
-      response: typeof response.body === 'string' ? response.body : JSON.stringify(response.body),
-      vu: typeof __VU !== 'undefined' ? __VU : null,
-      timestamp: new Date().toISOString(),
-    });
+  const passed = checkResponse(response, 200, 'login');
+  if (!passed) {
     throw new Error(`Login failed with status ${response.status}: ${response.body}`);
   }
 
+  const body = response.json();
+
+  if (response.timings && response.timings.duration !== undefined) {
+    recordLoginDuration(response.timings.duration);
+  }
+
   if (!body || body.success !== true) {
+    recordLoginApiFailure();
+    recordApiFailureMetric('login', response.status);
     addFailure({
       operation: 'login',
       url,

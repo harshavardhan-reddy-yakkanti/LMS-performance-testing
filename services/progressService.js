@@ -9,7 +9,7 @@ export function getProgress(courseId, token, env) {
     },
   };
 
-  const response = request('GET', url, null, params, 'Get_Progress_API');
+  const response = request('GET', url, null, params);
   checkResponse(response, 200, 'getProgress');
   return response.json() || {};
 }

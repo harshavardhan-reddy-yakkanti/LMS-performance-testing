@@ -1,7 +1,7 @@
 import { request } from '../utils/apiClient.js';
 import { checkResponse } from '../utils/checks.js';
 import { getLessonIds } from './lessonService.js';
-import { recordCourseContentDuration } from '../utils/metrics.js';
+import { recordCourseContentDuration,recordMyCoursesDuration } from '../utils/metrics.js';
 
 export function getMyCourses(token, env) {
   const url = `${env.baseUrl}/enrollments/my-courses`;
@@ -11,8 +11,11 @@ export function getMyCourses(token, env) {
     },
   };
 
-  const response = request('GET', url, null, params, 'Get_My_Courses_API');
+  const response = request('GET', url, null, params);
   checkResponse(response, 200, 'getMyCourses');
+  if (response.timings && response.timings.duration) {
+    recordMyCoursesDuration(response.timings.duration);
+  }
 
   const courses = response.json() || [];
   const firstCourse = Array.isArray(courses) && courses.length > 0 ? courses[0] : {};
@@ -34,7 +37,7 @@ export function getCourseContent(courseSlug, token, env) {
   };
 
 
-  const response = request('GET', url, null, params, 'Get_Course_Content_API');
+  const response = request('GET', url, null, params);
 
   checkResponse(response, 200, 'getCourseContent');
 

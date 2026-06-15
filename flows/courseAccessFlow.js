@@ -10,45 +10,6 @@ import {
 import { getLiveSession } from '../services/liveSessionService.js';
 import { incrementMetric } from '../utils/metrics.js';
 
-export function studentCourseAccessFlow(course, token, env) {
-    const courseId = course.courseId;
-    const courseSlug = course.courseSlug;
-    const courses = getMyCourses(token, env);
-    const myCourse = courses.find((item) => item.id === courseId) || courses[0] || {};
-
-  const courseContent = getCourseContent(courseSlug , token, env);
-
-  const liveLesson = getFirstLiveLesson(courseContent);
-  if (liveLesson) {
-    console.log('[DEBUG] Live Lesson Found');
-    console.log(`[DEBUG] Lesson Id: ${liveLesson.lessonId}`);
-    console.log(`[DEBUG] Session Id: ${liveLesson.sessionId}`);
-    console.log(`[DEBUG] Lesson Title: ${liveLesson.title}`);
-
-    const response = openLiveLesson(liveLesson.lessonId, token, env);
-    const session = getLiveSession(liveLesson.sessionId, token, env);
-
-    console.log(`[DEBUG] Live Session Title: ${session.title || 'N/A'}`);
-    console.log(`[DEBUG] Live Session Status: ${session.status || 'N/A'}`);
-    console.log(`[DEBUG] Live Session zoom_join_url: ${session.zoom_join_url || 'N/A'}`);
-
-    incrementMetric('courseAccessSuccess');
-    return { response, session };
-  }
-
-  const lessonIds = getLessonIds(courseContent, env);
-
-  if (lessonIds.length === 0) {
-    incrementMetric('missingLessonIds');
-    return null;
-  }
-
-  const randomLessonId = lessonIds[Math.floor(Math.random() * lessonIds.length)];
-  const response = openLesson(randomLessonId, token, env);
-
-  incrementMetric('courseAccessSuccess');
-  return response;
-}
 
 export function executeLiveLessonFlow(course, token, env) {
   const courseContent = getCourseContent(course.courseSlug, token, env);

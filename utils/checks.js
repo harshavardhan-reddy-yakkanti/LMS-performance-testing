@@ -1,5 +1,29 @@
 import { check } from 'k6';
 import { addFailure } from './failureCollector.js';
+import {
+  recordGetAllCoursesFailure,
+  recordGetMyCoursesFailure,
+  recordGetCourseContentFailure,
+  recordOpenLessonFailure,
+  recordOpenLiveLessonFailure,
+  recordEnrollInCourseFailure,
+  recordJoinLiveSessionFailure,
+  recordGetProgressFailure,
+  recordLoginApiFailure,
+  recordApiFailureMetric,
+} from './metrics.js';
+
+const failureCounterMap = {
+  'getAllCourses': recordGetAllCoursesFailure,
+  'getMyCourses': recordGetMyCoursesFailure,
+  'getCourseContent': recordGetCourseContentFailure,
+  'openLesson': recordOpenLessonFailure,
+  'openLiveLesson': recordOpenLiveLessonFailure,
+  'enrollInCourse': recordEnrollInCourseFailure,
+  'joinLiveSession': recordJoinLiveSessionFailure,
+  'getProgress': recordGetProgressFailure,
+  'login': recordLoginApiFailure,
+};
 
 export function checkResponse(response, expectedStatus, operationName) {
   const passed = check(response, {
@@ -8,6 +32,14 @@ export function checkResponse(response, expectedStatus, operationName) {
 
   if (!passed) {
     console.error(`${operationName} failed: ${response.status} ${response.body}`);
+
+    // Record API failure metric
+    recordApiFailureMetric(operationName, response.status);
+
+    // Record specific API failure counter
+    if (failureCounterMap[operationName]) {
+      failureCounterMap[operationName]();
+    }
 
     addFailure({
       operation: operationName,

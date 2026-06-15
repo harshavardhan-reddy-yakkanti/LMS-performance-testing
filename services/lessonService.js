@@ -1,6 +1,6 @@
 import { request } from '../utils/apiClient.js';
 import { checkResponse } from '../utils/checks.js';
-import { recordOpenLessonDuration } from '../utils/metrics.js';
+import { recordOpenLessonDuration, recordOpenLiveLessonDuration } from '../utils/metrics.js';
 
 function collectLessonIds(node, accumulator = []) {
   if (node == null || typeof node !== 'object') {
@@ -116,7 +116,7 @@ export function openLesson(lessonId, token, env) {
   console.log(`[DEBUG] Lesson Id: ${lessonId}`);
   console.log(`[DEBUG] URL: ${url}`);
 
-  const response = request('GET', url, null, params, 'Open_Lesson_API');
+  const response = request('GET', url, null, params);
 
   console.log(`[DEBUG] Status Code: ${response.status}`);
   console.log(`[DEBUG] Response Body: ${response.body}`);
@@ -125,7 +125,10 @@ export function openLesson(lessonId, token, env) {
     recordOpenLessonDuration(response.timings.duration);
   }
 
-  checkResponse(response, 200, 'openLesson');
+  const passed = checkResponse(response, 200, 'openLesson');
+  if (!passed) {
+    throw new Error(`openLesson failed with status ${response.status}: ${response.body}`);
+  }
 
   return response;
 }
@@ -142,12 +145,16 @@ export function openLiveLesson(lessonId, token, env) {
   console.log('[DEBUG] Opening Live Lesson');
   console.log(`[DEBUG] Live Lesson Id: ${lessonId}`);
 
-  const response = request('GET', url, null, params, 'OpenLesson_API');
+  const response = request('GET', url, null, params);
 
   if (response.timings && response.timings.duration) {
-    recordOpenLessonDuration(response.timings.duration);
+    recordOpenLiveLessonDuration(response.timings.duration);
   }
 
-  checkResponse(response, 200, 'openLiveLesson');
+  const passed = checkResponse(response, 200, 'openLiveLesson');
+  if (!passed) {
+    throw new Error(`openLiveLesson failed with status ${response.status}: ${response.body}`);
+  }
+
   return response;
 }

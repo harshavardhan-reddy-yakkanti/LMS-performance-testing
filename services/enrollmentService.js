@@ -10,7 +10,7 @@ export function enrollInCourse(courseId, token, env) {
     },
   };
 
-  const response = request('POST', url, null, params, 'Enroll_In_Course_API');
+  const response = request('POST', url, null, params);
   checkResponse(response, 200, 'enrollInCourse');
   return response;
 }

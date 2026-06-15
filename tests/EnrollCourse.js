@@ -8,31 +8,15 @@ import { executeLoginFlow } from '../flows/loginFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import { loadCourses } from '../utils/dataLoader.js';
 import { executeLiveLessonFlow } from '../flows/courseAccessFlow.js';
-
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
-
 const users = loadUsers();
-const courses = loadCourses();
 
 export const options = {
-  vus:2,
-  iterations: 2,
-}
+  vus: 10,
+  iterations: 10,
+};
 
-// export const options = {
-//   scenarios: {
-//     live_lesson_join: {
-//       executor: 'constant-arrival-rate',
-//       rate: 2,
-//       timeUnit: '1s',
-//       duration: '1s',
-
-//       preAllocatedVUs: 2,
-//       maxVUs: 2,
-//     },
-//   },
-// };
 export default function () {
 
   const user =
@@ -64,20 +48,8 @@ export default function () {
     `Access Token Preview: ${accessToken.slice(0, 20)}`
   );
 
-  if (!courses || courses.length === 0) {
-    throw new Error(
-      'No course data available for test.'
-    );
-  }
+executeCourseEnrollFlow();
 
-  const course = courses[0];
-
-  executeLiveLessonFlow(
-    course,
-    accessToken,
-    env
-  );
-}
 
 export function handleSummary(data) {
 
@@ -93,4 +65,5 @@ export function handleSummary(data) {
     'performance-framework/reports/accessLiveLesson.json':
       JSON.stringify(data, null, 2),
   };
+}
 }
