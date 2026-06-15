@@ -2,7 +2,7 @@ import { request } from '../utils/apiClient.js';
 import { checkResponse } from '../utils/checks.js';
 import { recordLiveSessionDuration } from '../utils/metrics.js';
 
-export function getLiveSession(sessionId, token, env) {
+export function joinLiveSession(sessionId, token, env) {
   const url = `${env.baseUrl}/live-sessions/${sessionId}`;
   const params = {
     headers: {

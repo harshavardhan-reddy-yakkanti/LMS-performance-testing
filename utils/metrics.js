@@ -7,6 +7,13 @@ const customMetrics = {
   getAllCoursesFailure: new Counter('get_all_courses_failure_count'),
   getMyCoursesFailure: new Counter('get_my_courses_failure_count'),
   getCourseContentFailure: new Counter('get_course_content_failure_count'),
+  getCourseRoadmapFailure: new Counter('course_roadmap_failure_count'),
+  checkCourseEnrollmentFailure: new Counter('course_enrollment_check_failure_count'),
+  getCouponsPublicFailure: new Counter('coupons_public_failure_count'),
+  validateCouponFailure: new Counter('validate_coupon_failure_count'),
+  getBillingAddressFailure: new Counter('get_billing_address_failure_count'),
+  addBillingAddressFailure: new Counter('add_billing_address_failure_count'),
+  createOrderFailure: new Counter('create_order_failure_count'),
   enrollInCourseFailure: new Counter('enroll_in_course_failure_count'),
   joinLiveSessionFailure: new Counter('get_live_session_failure_count'),
   getProgressFailure: new Counter('get_progress_failure_count'),
@@ -20,10 +27,17 @@ const customMetrics = {
   loginDuration: new Trend('Login'),
   myCoursesDuration: new Trend('My_Courses'),
   courseContentDuration: new Trend('Get_Course_Content'),
+  courseRoadmapDuration: new Trend('Get_Course_Roadmap'),
+  courseEnrollmentCheckDuration: new Trend('Check_Course_Enrollment'),
+  couponsPublicDuration: new Trend('Get_Coupons_Public'),
+  validateCouponDuration: new Trend('Validate_Coupon'),
+  getBillingAddressDuration: new Trend('Get_Billing_Address'),
+  addBillingAddressDuration: new Trend('Add_Billing_Address'),
+  createOrderDuration: new Trend('Create_Order'),
   openLessonDuration: new Trend('Open_Lesson'),
   openLiveLessonDuration: new Trend('Open_Live_Lesson'),
   liveSessionDuration: new Trend('Join_Live_Session'),
-  allCourseDuration: new Trend('All_Course_Duration'),
+  allCoursesDuration: new Trend('All_Courses_Duration'),
 };
 
 export function incrementMetric(name, value = 1) {
@@ -48,6 +62,34 @@ export function recordCourseContentDuration(durationMs) {
   customMetrics.courseContentDuration.add(durationMs);
 }
 
+export function recordCourseRoadmapDuration(durationMs) {
+  customMetrics.courseRoadmapDuration.add(durationMs);
+}
+
+export function recordCourseEnrollmentCheckDuration(durationMs) {
+  customMetrics.courseEnrollmentCheckDuration.add(durationMs);
+}
+
+export function recordCouponsPublicDuration(durationMs) {
+  customMetrics.couponsPublicDuration.add(durationMs);
+}
+
+export function recordValidateCouponDuration(durationMs) {
+  customMetrics.validateCouponDuration.add(durationMs);
+}
+
+export function recordGetBillingAddressDuration(durationMs) {
+  customMetrics.getBillingAddressDuration.add(durationMs);
+}
+
+export function recordAddBillingAddressDuration(durationMs) {
+  customMetrics.addBillingAddressDuration.add(durationMs);
+}
+
+export function recordCreateOrderDuration(durationMs) {
+  customMetrics.createOrderDuration.add(durationMs);
+}
+
 export function recordOpenLessonDuration(durationMs) {
   customMetrics.openLessonDuration.add(durationMs);
 }
@@ -64,8 +106,8 @@ export function recordCourseAccessSuccess(durationMs) {
   customMetrics.courseAccessSuccess.add(durationMs);
 }
 
-export function recordAllCourseDuration(durationMs) {
-  customMetrics.allCourseDuration.add(durationMs);
+export function recordAllCoursesDuration(durationMs) {
+  customMetrics.allCoursesDuration.add(durationMs);
 }
 
 export function recordFailure(isFailed) {
@@ -94,6 +136,34 @@ export function recordGetMyCoursesFailure() {
 
 export function recordGetCourseContentFailure() {
   customMetrics.getCourseContentFailure.add(1);
+}
+
+export function recordGetCourseRoadmapFailure() {
+  customMetrics.getCourseRoadmapFailure.add(1);
+}
+
+export function recordCheckCourseEnrollmentFailure() {
+  customMetrics.checkCourseEnrollmentFailure.add(1);
+}
+
+export function recordGetCouponsPublicFailure() {
+  customMetrics.getCouponsPublicFailure.add(1);
+}
+
+export function recordValidateCouponFailure() {
+  customMetrics.validateCouponFailure.add(1);
+}
+
+export function recordGetBillingAddressFailure() {
+  customMetrics.getBillingAddressFailure.add(1);
+}
+
+export function recordAddBillingAddressFailure() {
+  customMetrics.addBillingAddressFailure.add(1);
+}
+
+export function recordCreateOrderFailure() {
+  customMetrics.createOrderFailure.add(1);
 }
 
 export function recordOpenLessonFailure() {

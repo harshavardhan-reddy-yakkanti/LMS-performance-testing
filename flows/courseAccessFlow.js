@@ -7,7 +7,7 @@ import {
   openLesson,
   openLiveLesson,
 } from '../services/lessonService.js';
-import { getLiveSession } from '../services/liveSessionService.js';
+import { joinLiveSession } from '../services/liveSessionService.js';
 import { incrementMetric } from '../utils/metrics.js';
 
 
@@ -28,7 +28,7 @@ export function executeLiveLessonFlow(course, token, env) {
   console.log(`[DEBUG] Session Id: ${selectedLiveLesson.sessionId}`);
 
   const response = openLiveLesson(selectedLiveLesson.lessonId, token, env);
-  const session = getLiveSession(selectedLiveLesson.sessionId, token, env);
+  const session = joinLiveSession(selectedLiveLesson.sessionId, token, env);
 
   console.log(`[DEBUG] Live Session Title: ${session.title || 'N/A'}`);
   console.log(`[DEBUG] Live Session Status: ${session.status || 'N/A'}`);

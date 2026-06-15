@@ -1,8 +1,30 @@
 import { request } from '../utils/apiClient.js';
 import { checkResponse } from '../utils/checks.js';
 import { getLessonIds } from './lessonService.js';
-import { recordCourseContentDuration,recordMyCoursesDuration } from '../utils/metrics.js';
+import { recordCourseContentDuration, recordMyCoursesDuration, recordAllCoursesDuration } from '../utils/metrics.js';
 
+
+export function getAllCourses(token, env) {
+  const url = `${env.baseUrl}/courses/with-auth?limit=10&offset=0`;
+  const params = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = request('GET', url, null, params);
+  const passed = checkResponse(response, 200, 'getAllCourses');
+
+  if (!passed) {
+    throw new Error(`getAllCourses failed with status ${response.status}: ${response.body}`);
+  }
+
+  if (response.timings && response.timings.duration) {
+    recordAllCoursesDuration(response.timings.duration);
+  }
+
+  return response.json();
+}
 export function getMyCourses(token, env) {
   const url = `${env.baseUrl}/enrollments/my-courses`;
   const params = {
