@@ -4,21 +4,32 @@ import { defaultEnv, environments } from '../config/environments.js';
 import { executeLoginFlow } from '../flows/loginFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import {loadCourses} from '../utils/dataLoader.js';
-import { studentCourseAccessFlow, executeLiveLessonFlow } from '../flows/courseAccessFlow.js';
-
+import { executeLiveLessonFlow } from '../flows/courseAccessFlow.js';
+import exec from 'k6/execution';
+import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
+import { getFailures } from '../utils/failureCollector.js';
 
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
-const users = loadUsers();
 const courses = loadCourses();
-const user = users[0];
+const users = loadUsers().slice(0, 10);
 
 export const options = {
-  vus: 1,
-  iterations: 1,
+  vus: 10,
+  iterations: 10,
+  summaryTrendStats: [
+    'avg',
+    'min',
+    'med',
+    'max',
+    'p(90)',
+    'p(95)',
+    'p(99)',
+  ]
 };
 
 export default function () {
+  const user = users[(exec.vu.idInTest - 1) % users.length];
   if (!user) {
     throw new Error('No user data available for smoke test.');
   }
@@ -43,50 +54,14 @@ export default function () {
 }
 
 export function handleSummary(data) {
-  const summary = textSummary(data, { indent: ' ', enableColors: true });
+ return {
+     stdout: textSummary(data, {
+       indent: ' ',
+       enableColors: true,
+     }),
+     'performance-framework/reports/smoke.html': htmlReport(data),
+     'performance-framework/reports/smoke.json': JSON.stringify(data, null, 2),
+     'performance-framework/reports/smoke.failures.json': JSON.stringify(getFailures(), null, 2),
+   };
 
-  const metrics = data.metrics;
-  const metricsOutput = [];
-
-  metricsOutput.push('\n=== API Duration Metrics ===\n');
-
-  if (metrics.login_duration) {
-    const loginStats = metrics.login_duration.values;
-    metricsOutput.push('Login API');
-    metricsOutput.push(`  avg: ${loginStats.avg.toFixed(2)}ms`);
-    metricsOutput.push(`  p90: ${loginStats['p(90)'].toFixed(2)}ms`);
-    metricsOutput.push(`  p95: ${loginStats['p(95)'].toFixed(2)}ms`);
-    metricsOutput.push('');
-  }
-
-  if (metrics.course_content_duration) {
-    const courseStats = metrics.course_content_duration.values;
-    metricsOutput.push('Course Content API');
-    metricsOutput.push(`  avg: ${courseStats.avg.toFixed(2)}ms`);
-    metricsOutput.push(`  p90: ${courseStats['p(90)'].toFixed(2)}ms`);
-    metricsOutput.push(`  p95: ${courseStats['p(95)'].toFixed(2)}ms`);
-    metricsOutput.push('');
-  }
-
-  if (metrics.open_lesson_duration) {
-    const lessonStats = metrics.open_lesson_duration.values;
-    metricsOutput.push('Open Lesson API');
-    metricsOutput.push(`  avg: ${lessonStats.avg.toFixed(2)}ms`);
-    metricsOutput.push(`  p90: ${lessonStats['p(90)'].toFixed(2)}ms`);
-    metricsOutput.push(`  p95: ${lessonStats['p(95)'].toFixed(2)}ms`);
-    metricsOutput.push('');
-  }
-
-  if (metrics.live_session_duration) {
-    const liveStats = metrics.live_session_duration.values;
-    metricsOutput.push('Live Session API');
-    metricsOutput.push(`  avg: ${liveStats.avg.toFixed(2)}ms`);
-    metricsOutput.push(`  p90: ${liveStats['p(90)'].toFixed(2)}ms`);
-    metricsOutput.push(`  p95: ${liveStats['p(95)'].toFixed(2)}ms`);
-    metricsOutput.push('');
-  }
-
-  return {
-    stdout: summary + metricsOutput.join('\n'),
-  };
 }

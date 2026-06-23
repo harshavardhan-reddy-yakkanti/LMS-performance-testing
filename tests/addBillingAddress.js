@@ -5,7 +5,7 @@ import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporte
 
 import { defaultEnv, environments } from '../config/environments.js';
 import { executeLoginFlow } from '../flows/loginFlow.js';
-import { executeCourseEnrollFlow } from '../flows/enrollCourseFlow.js';
+import { executeAddBillingAddressFlow } from '../flows/addBillingAddressFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import { getFailures } from '../utils/failureCollector.js';
 
@@ -35,8 +35,11 @@ export default function () {
   }
 
   console.log(`VU ${exec.vu.idInTest} executing with ${user.email}`);
+
   const continueOnLoginFailureEnv =
-    __ENV.CONTINUE_ON_LOGIN_FAILURE === 'true' || __ENV.CONTINUE_ON_LOGIN_FAILURE === '1';
+    __ENV.CONTINUE_ON_LOGIN_FAILURE === 'true' ||
+    __ENV.CONTINUE_ON_LOGIN_FAILURE === '1';
+
   const continueOnLoginFailure =
     continueOnLoginFailureEnv || Boolean(env.continueOnLoginFailure);
 
@@ -47,29 +50,29 @@ export default function () {
     accessToken = tokens?.accessToken;
 
     check(accessToken, {
-      'access token extracted': (token) => Boolean(token) && token.length > 20,
+      'access token extracted': (token) =>
+        Boolean(token) && token.length > 20,
     });
 
     console.log('Login Successful');
     console.log(`User Email: ${user.email}`);
     console.log(`Access Token Preview: ${accessToken.slice(0, 20)}`);
-  } catch (err) {
-    console.error('Login failed:', err && err.message ? err.message : err);
-    if (!continueOnLoginFailure) {
-      throw err;
-    }
-    console.log('[WARN] CONTINUE_ON_LOGIN_FAILURE is set — continuing despite login failure.');
-  }
 
-  try {
-    const orderResult = executeCourseEnrollFlow(accessToken, env);
-    console.log('[INFO] Enrollment flow completed:', JSON.stringify(orderResult));
+    executeAddBillingAddressFlow(accessToken, env);
+
   } catch (err) {
-    console.error('Enrollment flow failed:', err && err.message ? err.message : err);
+    console.error(
+      'Login failed:',
+      err && err.message ? err.message : err
+    );
+
     if (!continueOnLoginFailure) {
       throw err;
     }
-    console.log('[WARN] CONTINUE_ON_LOGIN_FAILURE is set — continuing despite enrollment failure.');
+
+    console.log(
+      '[WARN] CONTINUE_ON_LOGIN_FAILURE is set — continuing despite login failure.'
+    );
   }
 }
 
@@ -79,8 +82,11 @@ export function handleSummary(data) {
       indent: ' ',
       enableColors: true,
     }),
-    'performance-framework/reports/enrollCourse.html': htmlReport(data),
-    'performance-framework/reports/enrollCourse.json': JSON.stringify(data, null, 2),
-    'performance-framework/reports/enrollCourse.failures.json': JSON.stringify(getFailures(), null, 2),
+    'performance-framework/reports/addBillingAddress.html':
+      htmlReport(data),
+    'performance-framework/reports/addBillingAddress.json':
+      JSON.stringify(data, null, 2),
+    'performance-framework/reports/addBillingAddress.failures.json':
+      JSON.stringify(getFailures(), null, 2),
   };
 }

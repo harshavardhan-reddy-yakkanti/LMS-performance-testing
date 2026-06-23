@@ -26,7 +26,7 @@ export const options = {
     'p(90)',
     'p(95)',
     'p(99)',
-  ],
+  ]
 }
 
 // export const options = {

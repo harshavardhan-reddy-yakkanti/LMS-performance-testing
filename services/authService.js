@@ -24,7 +24,13 @@ export function login(baseUrl, email, password) {
     throw new Error(`Login failed with status ${response.status}: ${response.body}`);
   }
 
-  const body = response.json();
+  let body;
+  try {
+    body = response.json();
+  } catch (err) {
+    console.error(`Login response JSON parse failed: status=${response.status} body=${response.body}`);
+    throw new Error(`Login response JSON parse failed: status=${response.status} body=${response.body}`);
+  }
 
   if (response.timings && response.timings.duration !== undefined) {
     recordLoginDuration(response.timings.duration);
