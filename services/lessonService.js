@@ -112,14 +112,7 @@ export function openLesson(lessonId, token, env) {
     },
   };
 
-  console.log(`[DEBUG] Opening Lesson`);
-  console.log(`[DEBUG] Lesson Id: ${lessonId}`);
-  console.log(`[DEBUG] URL: ${url}`);
-
   const response = request('GET', url, null, params);
-
-  console.log(`[DEBUG] Status Code: ${response.status}`);
-  console.log(`[DEBUG] Response Body: ${response.body}`);
 
   if (response.timings && response.timings.duration) {
     recordOpenLessonDuration(response.timings.duration);
@@ -127,7 +120,7 @@ export function openLesson(lessonId, token, env) {
 
   const passed = checkResponse(response, 200, 'openLesson');
   if (!passed) {
-    throw new Error(`openLesson failed with status ${response.status}: ${response.body}`);
+    throw new Error(`openLesson failed`);
   }
 
   return response;
@@ -142,9 +135,6 @@ export function openLiveLesson(lessonId, token, env) {
     },
   };
 
-  console.log('[DEBUG] Opening Live Lesson');
-  console.log(`[DEBUG] Live Lesson Id: ${lessonId}`);
-
   const response = request('GET', url, null, params);
 
   if (response.timings && response.timings.duration) {
@@ -153,7 +143,7 @@ export function openLiveLesson(lessonId, token, env) {
 
   const passed = checkResponse(response, 200, 'openLiveLesson');
   if (!passed) {
-    throw new Error(`openLiveLesson failed with status ${response.status}: ${response.body}`);
+    throw new Error(`openLiveLesson failed`);
   }
 
   return response;

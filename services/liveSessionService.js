@@ -10,15 +10,12 @@ export function joinLiveSession(sessionId, token, env) {
     },
   };
 
-  console.log(`[DEBUG] Live Session Id: ${sessionId}`);
-
   const response = request('GET', url, null, params);
 
   if (response.timings && response.timings.duration) {
     recordLiveSessionDuration(response.timings.duration);
   }
 
-  console.log(`[DEBUG] Status Code: ${response.status}`);
   checkResponse(response, 200, 'joinLiveSession');
 
   return response.json() || {};

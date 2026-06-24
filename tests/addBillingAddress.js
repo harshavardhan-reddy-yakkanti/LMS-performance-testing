@@ -8,24 +8,13 @@ import { executeLoginFlow } from '../flows/loginFlow.js';
 import { executeAddBillingAddressFlow } from '../flows/addBillingAddressFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import { getFailures } from '../utils/failureCollector.js';
+import { defaultOptions } from '../config/testOptions.js';
 
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
 const users = loadUsers().slice(0, 10);
 
-export const options = {
-  vus: 10,
-  iterations: 10,
-  summaryTrendStats: [
-    'avg',
-    'min',
-    'med',
-    'max',
-    'p(90)',
-    'p(95)',
-    'p(99)',
-  ]
-};
+export const options = defaultOptions;
 
 export default function () {
   const user = users[(exec.vu.idInTest - 1) % users.length];

@@ -64,7 +64,7 @@ export function checkResponse(response, expectedStatus, operationName) {
     const formattedBody = formatResponseBody(response.body);
     console.error(`${operationName} failed: ${response.status}`);
     
-    console.error(`${operationName} details: url=${response.url || 'N/A'} headers=${JSON.stringify(response.headers || {})}`);
+    console.error(`${operationName} response body: ${formattedBody.substring(0, 100)}`); // Log first 100 characters of the response body
 
     // Record API failure metric
     recordApiFailureMetric(operationName, response.status);

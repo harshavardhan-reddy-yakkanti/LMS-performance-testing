@@ -21,7 +21,6 @@ export function executeCourseEnrollFlow(token, env) {
   const selectedCourse = selectCourseForEnrollment(courses);
 
   if (!selectedCourse) {
-    console.log('[INFO] No not-enrolled course found for enrollment.');
     return null;
   }
 
@@ -36,27 +35,15 @@ export function executeCourseEnrollFlow(token, env) {
 
   const enrollmentStatus = checkCourseEnrollment(courseId, token, env);
   if (enrollmentStatus?.is_enrolled === true || enrollmentStatus?.status === 'enrolled') {
-    console.log(`[INFO] Course already enrolled: ${courseSlug}`);
     return enrollmentStatus;
   }
 
   const coupons = getCouponsPublic(courseSlug, token, env);
   const selectedCoupon = Array.isArray(coupons) && coupons.length > 0 ? coupons[0] : null;
-  if (selectedCoupon) {
-    console.log(`[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] Selected coupon ${selectedCoupon.code} for course ${courseSlug}`);
-  } else {
-    console.log(`[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] No coupons returned for course ${courseSlug}`);
-  }
 
   const validatedCoupon = selectedCoupon
     ? validateCoupon(selectedCoupon.code, courseSlug, token, env)
     : null;
-
-  if (validatedCoupon) {
-    console.log(`[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] Coupon validation result: ${JSON.stringify(validatedCoupon)}`);
-  } else if (selectedCoupon) {
-    console.log(`[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] Coupon validation failed or returned null for code ${selectedCoupon.code}`);
-  }
 
   getBillingAddresses(token, env);
   const billingAddressId = addBillingAddress(token, env)?.data?.id;

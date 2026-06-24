@@ -21,15 +21,14 @@ export function login(baseUrl, email, password) {
 
   const passed = checkResponse(response, 200, 'login');
   if (!passed) {
-    throw new Error(`Login failed with status ${response.status}: ${response.body}`);
+    throw new Error(`login failed`);
   }
 
   let body;
   try {
     body = response.json();
   } catch (err) {
-    console.error(`Login response JSON parse failed: status=${response.status} body=${response.body}`);
-    throw new Error(`Login response JSON parse failed: status=${response.status} body=${response.body}`);
+    throw new Error(`login response JSON parse failed`);
   }
 
   if (response.timings && response.timings.duration !== undefined) {

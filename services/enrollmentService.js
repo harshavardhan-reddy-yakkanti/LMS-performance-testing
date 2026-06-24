@@ -78,7 +78,7 @@ export function getCourseRoadmap(courseSlug, token, env) {
 
   const passed = checkResponse(response, 200, 'getCourseRoadmap');
   if (!passed) {
-    throw new Error(`getCourseRoadmap failed with status ${response.status}: ${response.body}`);
+    throw new Error(`getCourseRoadmap failed`);
   }
 
   return response.json();
@@ -99,7 +99,7 @@ export function checkCourseEnrollment(courseId, token, env) {
 
   const passed = checkResponse(response, 200, 'checkCourseEnrollment');
   if (!passed) {
-    throw new Error(`checkCourseEnrollment failed with status ${response.status}: ${response.body}`);
+    throw new Error(`checkCourseEnrollment failed`);
   }
 
   return response.json();
@@ -120,7 +120,7 @@ export function getCouponsPublic(courseSlug, token, env) {
 
   const passed = checkResponse(response, 200, 'getCouponsPublic');
   if (!passed) {
-    throw new Error(`getCouponsPublic failed with status ${response.status}: ${response.body}`);
+    throw new Error(`getCouponsPublic failed`);
   }
 
   return response.json() || [];
@@ -130,9 +130,6 @@ export function validateCoupon(couponCode, courseSlug, token, env) {
   const url = `${env.baseUrl}/coupons/validate`;
   const payload = JSON.stringify({ code: couponCode, course_slug: courseSlug });
 
-  console.log(
-    `[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] validateCoupon called with code=${couponCode} course=${courseSlug}`
-  );
   const params = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -147,8 +144,7 @@ export function validateCoupon(couponCode, courseSlug, token, env) {
 
   const passed = checkResponse(response, 200, 'validateCoupon');
   if (!passed) {
-    console.error(`[VU ${typeof __VU !== 'undefined' ? __VU : 'N/A'}] validateCoupon response: ${response.status} ${response.body}`);
-    throw new Error(`validateCoupon failed with status ${response.status}: ${response.body}`);
+    throw new Error(`validateCoupon failed`);
   }
 
   return response.json();
@@ -169,7 +165,7 @@ export function getBillingAddresses(token, env) {
 
   const passed = checkResponse(response, 200, 'getBillingAddresses');
   if (!passed) {
-    throw new Error(`getBillingAddresses failed with status ${response.status}: ${response.body}`);
+    throw new Error(`getBillingAddresses failed`);
   }
 
   const body = response.json();
@@ -193,7 +189,7 @@ export function addBillingAddress(token, env, address = defaultBillingAddressPay
 
   const passed = checkResponse(response, 200, 'addBillingAddress');
   if (!passed) {
-    throw new Error(`addBillingAddress failed with status ${response.status}: ${response.body}`);
+    throw new Error(`addBillingAddress failed`);
   }
 
   return response.json();
@@ -227,7 +223,7 @@ export function createOrder({ courseId, courseSlug, couponCode, billingAddressId
 
   const passed = checkResponse(response, 201, 'createOrder');
   if (!passed) {
-    throw new Error(`createOrder failed with status ${response.status}: ${response.body}`);
+    throw new Error(`createOrder failed`);
   }
 
   return response.json();

@@ -8,27 +8,16 @@ import { executeLoginFlow } from '../flows/loginFlow.js';
 import { executeCourseEnrollFlow } from '../flows/enrollCourseFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import { getFailures } from '../utils/failureCollector.js';
+import { defaultOptions } from '../config/testOptions.js';
 
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
-const users = loadUsers().slice(0, 10);
+const users = loadUsers().slice(80, 100);
 
-export const options = {
-  vus: 10,
-  iterations: 10,
-  summaryTrendStats: [
-    'avg',
-    'min',
-    'med',
-    'max',
-    'p(90)',
-    'p(95)',
-    'p(99)',
-  ]
-};
+export const options = defaultOptions;
 
 export default function () {
-  const user = users[(exec.vu.idInTest - 1) % users.length];
+  const user = users[(exec.scenario.iterationInTest) % users.length];
 
   if (!user) {
     throw new Error(`No user mapped for VU ${exec.vu.idInTest}`);

@@ -8,28 +8,17 @@ import { executeLiveLessonFlow } from '../flows/courseAccessFlow.js';
 import exec from 'k6/execution';
 import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js';
 import { getFailures } from '../utils/failureCollector.js';
+import { defaultOptions } from '../config/testOptions.js';
 
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
 const courses = loadCourses();
-const users = loadUsers().slice(0, 10);
+const users = loadUsers();
 
-export const options = {
-  vus: 10,
-  iterations: 10,
-  summaryTrendStats: [
-    'avg',
-    'min',
-    'med',
-    'max',
-    'p(90)',
-    'p(95)',
-    'p(99)',
-  ]
-};
+export const options = defaultOptions;
 
 export default function () {
-  const user = users[(exec.vu.idInTest - 1) % users.length];
+  const user = users[(exec.scenario.iterationInTest) % users.length];
   if (!user) {
     throw new Error('No user data available for smoke test.');
   }
@@ -48,8 +37,8 @@ export default function () {
   }
   const course = courses[0];
 
-  //const coursesResponse = studentCourseAccessFlow(course, accessToken, env);
-  const liveLessonResponse = executeLiveLessonFlow(course, accessToken, env);
+  
+  //const liveLessonResponse = executeLiveLessonFlow(course, accessToken, env);
 
 }
 

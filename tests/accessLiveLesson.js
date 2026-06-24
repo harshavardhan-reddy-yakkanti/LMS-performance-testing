@@ -8,6 +8,7 @@ import { executeLoginFlow } from '../flows/loginFlow.js';
 import { loadUsers } from '../utils/dataLoader.js';
 import { loadCourses } from '../utils/dataLoader.js';
 import { executeLiveLessonFlow } from '../flows/courseAccessFlow.js';
+import { defaultOptions } from '../config/testOptions.js';
 
 const envName = __ENV.TEST_ENV || defaultEnv.name;
 const env = environments[envName] || defaultEnv;
@@ -15,33 +16,8 @@ const env = environments[envName] || defaultEnv;
 const users = loadUsers();
 const courses = loadCourses();
 
-export const options = {
-  vus:2,
-  iterations: 2,
-  summaryTrendStats: [
-    'avg',
-    'min',
-    'med',
-    'max',
-    'p(90)',
-    'p(95)',
-    'p(99)',
-  ]
-}
+export const options = defaultOptions;
 
-// export const options = {
-//   scenarios: {
-//     live_lesson_join: {
-//       executor: 'constant-arrival-rate',
-//       rate: 2,
-//       timeUnit: '1s',
-//       duration: '1s',
-
-//       preAllocatedVUs: 2,
-//       maxVUs: 2,
-//     },
-//   },
-// };
 export default function () {
 
   const user =
